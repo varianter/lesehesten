@@ -1,0 +1,144 @@
+CREATE host:mikael_brevik SET
+  slug = 'mikael_brevik',
+  name = 'Mikael Brevik',
+  avatar = 'https://www.variant.no/_next/image?url=https%3A%2F%2Fvariantno.blob.core.windows.net%2Femployees%2F-39c27de9.png&w=640&q=75',
+  externalUrl = 'https://mib.im',
+  description = 'Mikael';
+
+
+-- Episode 1 (intro)
+CREATE episode:s1e1 SET
+  slug = 's1e1',
+  episode = 1,
+  season = season:s1,
+  title = 'Intro'
+  publicationDate = "2022-02-10",
+  description = 'Premiere på sesong, podcast og konsept! Et utvalg kolleger i Variant møtes utover året for å snakke om bøker i et utvalgt pensum for hver sesong. I S01 dekker vi: The Little Schemer, Thinking Forth, Domain Modelling Made Functional, Fundamentals of Software Architecture, The DevOps Handbook og Flow Architectures. Vi har også noen substituttbøker: The Pragmatic Programmer, Effective TypeScript og JavaScript for Impatiant Programmers. Bli med og bli en lesehest du også!',
+  episodeUrl = 'https://share.transistor.fm/s/554531fd',
+  mp3 = { url: 'https://media.transistor.fm/554531fd/993d83a1.mp3', length: 40131939, duration: 2506 };
+
+RELATE host:mikael_brevik->hosts->episode:s1e1;
+
+-- Episode 2
+
+CREATE book:little_schemer SET
+  slug = 'little_schemer',
+  title = 'The Little Schemer',
+  coverUrl = 'https://mit-press-us.imgix.net/covers/9780262560993.jpg?auto=format&w=298&dpr=2&q=20',
+  description = 'The notion that "thinking about computing is one of the most exciting things the human mind can do" sets both *The Little Schemer *(formerly known as *The Little LISPer*) and its new companion volume, *The Seasoned Schemer*, apart from other books on LISP. The authors\' enthusiasm for their subject is compelling as they present abstract concepts in a humorous and easy-to-grasp fashion. Together, these books will open new doors of thought to anyone who wants to find out what computing is really about. *The Little Schemer* introduces computing as an extension of arithmetic and algebra; things that everyone studies in grade school and high school. It introduces programs as recursive functions and briefly discusses the limits of what computers can do. The authors use the programming language Scheme, and interesting foods to illustrate these abstract ideas. *The Seasoned Schemer* informs the reader about additional dimensions of computing: functions as values, change of state, and exceptional cases. *The Little LISPer* has been a popular introduction to LISP for many years. It had appeared in French and Japanese. *The Little Schemer* and *The Seasoned Schemer* are worthy successors and will prove equally popular as textbooks for Scheme courses as well as companion texts for any complete introductory course in Computer Science.',
+  buyLink = 'https://mitpress.mit.edu/9780262560993/the-little-schemer/';
+
+CREATE episode:s1e2 SET
+  slug = 's1e2',
+  episode = 2,
+  season = season:s1,
+  book = book:little_schemer,
+  publicationDate = "2022-05-08",
+  description = 'Episode to av Lesehesten - utvikling! Et utvalg kolleger i Variant møtes utover året for å snakke om bøker i et utvalgt pensum for hver sesong. I denne episoden diskuterer vi boken The Little Schemer, som på kreativt vis skal lære deg rekursjon ved hjelp av programmeringsspråket Scheme. Allerede i denne episodem merker vi at alle blir klokere med forskjellig perspektiv, og lærer mer av en livlig diskusjon, når vi alle har lest samme bok. Bli med og bli en lesehest du også!',
+  episodeUrl = 'https://lesehesten.transistor.fm/episodes/s01e02-the-little-schemer',
+  mp3 = { url: 'https://media.transistor.fm/51edc1b4/88892846.mp3', length: 65574357, duration: 4095 };
+
+CREATE book:little_schemer SET
+  slug = 'little_schemer',
+  title = 'The Little Schemer',
+  coverUrl = 'https://mit-press-us.imgix.net/covers/9780262560993.jpg?auto=format&w=298&dpr=2&q=20',
+  description = 'The notion that "thinking about computing is one of the most exciting things the human mind can do" sets both *The Little Schemer *(formerly known as *The Little LISPer*) and its new companion volume, *The Seasoned Schemer*, apart from other books on LISP. The authors\' enthusiasm for their subject is compelling as they present abstract concepts in a humorous and easy-to-grasp fashion. Together, these books will open new doors of thought to anyone who wants to find out what computing is really about. *The Little Schemer* introduces computing as an extension of arithmetic and algebra; things that everyone studies in grade school and high school. It introduces programs as recursive functions and briefly discusses the limits of what computers can do. The authors use the programming language Scheme, and interesting foods to illustrate these abstract ideas. *The Seasoned Schemer* informs the reader about additional dimensions of computing: functions as values, change of state, and exceptional cases. *The Little LISPer* has been a popular introduction to LISP for many years. It had appeared in French and Japanese. *The Little Schemer* and *The Seasoned Schemer* are worthy successors and will prove equally popular as textbooks for Scheme courses as well as companion texts for any complete introductory course in Computer Science.',
+  buyLink = 'https://mitpress.mit.edu/9780262560993/the-little-schemer/';
+
+RELATE host:mikael_brevik->hosts->episode:s1e2;
+
+RELATE host:mikael_brevik->expects->book:little_schemer CONTENT {
+  likeIt: true,
+  readBefore: true,
+  expectation: 'Utrolig fascinerende og treffende pedagogikk for meg!',
+};
+
+RELATE host:mikael_brevik->rates->book:little_schemer CONTENT {
+  rating: 5,
+  recommends: true,
+  unsecure: false,
+  completed: true,
+  quote: 'Utrolig fascinerende og treffende pedagogikk for meg!',
+};
+
+
+-- Episode 3
+CREATE book:thinking_forth SET
+  slug = 'thinking_forth',
+  title = 'Thinking Forth',
+  coverUrl = 'https://thinking-forth.sourceforge.net/cover.jpg',
+  description = 'Thinking Forth is a book about the philosophy of problem solving and programming style, applied to the unique programming language [Forth](http://en.wikipedia.org/wiki/Forth_programming_language). Published first in 1984, it could be among the timeless classics of computer books, such as Fred Brooks\' [*The Mythical Man-Month*](http://www.amazon.com/exec/obidos/ASIN/0201835959) and Donald Knuth\'s [*The Art of Computer Programming.*](http://www.amazon.com/exec/obidos/ASIN/0201485419)\n\nMany software engineering principles discussed here have been rediscovered in eXtreme Programming, including (re)factoring, modularity, bottom-up and incremental design. Here you\'ll find all of those and more - such as the value of analysis and design - described in Leo Brodie\'s down-to-earth, humorous style, with illustrations, code examples, practical real life applications, illustrative cartoons, and interviews with Forth\'s inventor, Charles H. Moore as well as other Forth thinkers.\n\nIf you program in Forth, this is a must-read book. If you don\'t, the fundamental concepts are universal: Thinking Forth is meant for anyone interested in writing software to solve problems. The concepts go beyond Forth, but the simple beauty of Forth throws those concepts into stark relief.',
+  buyLink = 'https://thinking-forth.sourceforge.net/';
+
+CREATE episode:s1e3 SET
+  slug = 's1e3',
+  episode = 3,
+  season = season:s1,
+  book = book:thinking_forth,
+  publicationDate = "2022-08-03",
+  description = 'Episode tre av Lesehesten - utvikling! Et utvalg kolleger i Variant møtes utover året for å snakke om bøker i et utvalgt pensum for hver sesong. I denne episoden diskuterer vi boken Thinking Forth, som har mye god filosofi og praktisk kunnskap i seg, med programmeringsspråket Forth som bakteppe. Bli med og bli en lesehest du også!',
+  episodeUrl = 'https://share.transistor.fm/s/4114e225',
+  mp3 = { url: 'https://media.transistor.fm/4114e225/0f1c3580.mp3', length: 50583953, duration: 3158 };
+
+UPDATE book:thinking_forth SET episode = episode:s1e3;
+
+RELATE host:mikael_brevik->hosts->episode:s1e3;
+
+RELATE host:mikael_brevik->expects->book:thinking_forth CONTENT {
+  likeIt: true,
+  readBefore: false,
+  expectation: 'Dette er en av de bøkene jeg gleder meg mest til og har hørt mye om!',
+};
+
+RELATE host:mikael_brevik->rates->book:thinking_forth CONTENT {
+  rating: 5,
+  recommends: true,
+  unsecure: false,
+  completed: false,
+  quote: 'Utrolig fascinerende og treffende pedagogikk for meg!',
+};
+
+-- Episode 4
+CREATE book:domain_modeling SET
+  slug = 'domain_modeling',
+  title = 'Domain Modeling Made Functional',
+  coverUrl = 'https://pragprog.com/titles/swdddf/domain-modeling-made-functional/swdddf_hu6d5b8b63a4954cb696e89b39f929331b_660103_500x0_resize_q75_box.jpg',
+  description = 'You want increased customer satisfaction, faster development cycles, and less wasted work. Domain-driven design (DDD) combined with functional programming is the innovative combo that will get you there. In this pragmatic, down-to-earth guide, you’ll see how applying the core principles of functional programming can result in software designs that model real-world requirements both elegantly and concisely—often more so than an object-oriented approach. Practical examples in the open-source F# functional language, and examples from familiar business domains, show you how to apply these techniques to build software that is business-focused, flexible, and high quality.',
+  buyLink = 'https://pragprog.com/titles/swdddf/domain-modeling-made-functional/';
+
+CREATE episode:s1e4 SET
+  slug = 's1e4',
+  episode = 4,
+  season = season:s1,
+  book = book:domain_modeling,
+  publicationDate = "2022-12-11",
+  description = 'Episode fire av Lesehesten - utvikling! Et utvalg kolleger i Variant møtes utover året for å snakke om bøker i et utvalgt pensum for hver sesong. I denne episoden diskuterer vi boken Domain Modeling Made Function, en bok av F#-guruen Scott Wlaschin hvor han prøver å lære deg F# og Domain-Driven Development i en og samme bok. Bli med og bli en lesehest du også!',
+  episodeUrl = 'https://share.transistor.fm/s/47174b2c',
+  mp3 = { url: 'https://media.transistor.fm/47174b2c/f57a1e40.mp3', length: 59263387, duration: 3702 };
+
+UPDATE book:domain_modeling SET episode = episode:s1e4;
+
+RELATE host:mikael_brevik->hosts->episode:s1e4;
+
+RELATE host:mikael_brevik->expects->book:domain_modeling CONTENT {
+  likeIt: true,
+  readBefore: true,
+  expectation: 'Nok en klassiker! Lest den delvis tidligere og husker den med positivt fortegn.',
+};
+
+RELATE host:mikael_brevik->rates->book:domain_modeling CONTENT {
+  rating: 4,
+  recommends: true,
+  unsecure: false,
+  completed: true,
+  quote: 'Mye bra tankegods men også for mye grunnleggende funksjonell programmering om du er kjent med konseptene fra før!',
+};
+
+
+
+-- Season 1
+
+CREATE season:s1 SET
+  slug = 's1',
+  season: 1
+  episodes: [episode:s1e1, episode:s1e2, episode:s1e3, episode:s1e4];
