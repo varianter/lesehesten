@@ -1,0 +1,17 @@
+---
+import { getHost, getHosts } from "../../data";
+
+export async function getStaticPaths() {
+  const hosts = await getHosts();
+  return hosts.map((h) => ({ params: { hostId: h.slug } }));
+}
+
+const { hostId } = Astro.params;
+if (!hostId) {
+  return Astro.redirect("/host");
+}
+
+const host = await getHost(hostId);
+---
+
+<h1>{host.name}</h1>

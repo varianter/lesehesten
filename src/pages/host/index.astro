@@ -1,0 +1,19 @@
+---
+import { getHosts } from "../../data";
+
+const hosts = await getHosts();
+
+console.log(hosts);
+---
+
+<h1>Hosts</h1>
+
+<ul>
+  {
+    hosts.map((host) => (
+      <h2>
+        <a href={`/host/${host.slug}`}>{host.name}</a>
+      </h2>
+    ))
+  }
+</ul>
