@@ -5,6 +5,41 @@ CREATE host:mikael_brevik SET
   externalUrl = 'https://mib.im',
   description = 'Mikael';
 
+CREATE host:robin_hovind SET
+  slug = 'robin_hovind',
+  name = 'Robin Hovind',
+  avatar = 'https://www.variant.no/_next/image?url=https%3A%2F%2Fvariantno.blob.core.windows.net%2Femployees%2F-3556a50d.png&w=640&q=75',
+  externalUrl = '',
+  description = 'Robin';
+
+CREATE host:christian_brevik SET
+  slug = 'christian_brevik',
+  name = 'Christian Brevik',
+  avatar = 'https://www.variant.no/_next/image?url=https%3A%2F%2Fvariantno.blob.core.windows.net%2Femployees%2F-5a62de09.png&w=640&q=75',
+  externalUrl = '',
+  description = 'Christian';
+
+CREATE host:anders_njos_slinde SET
+  slug = 'anders_njos_slinde',
+  name = 'Anders Njøs Slinde',
+  avatar = 'https://www.variant.no/_next/image?url=https%3A%2F%2Fvariantno.blob.core.windows.net%2Femployees%2F37841cca.png&w=640&q=75',
+  externalUrl = '',
+  description = 'Anders NS';
+
+CREATE host:nikolai_norman_andersen SET
+  slug = 'nikolai_norman_andersen',
+  name = 'Nikolai Norman Andersen',
+  avatar = 'https://www.variant.no/_next/image?url=https%3A%2F%2Fvariantno.blob.core.windows.net%2Femployees%2F-62e9aa9.png&w=640&q=75',
+  externalUrl = '',
+  description = 'Nikolai';
+
+CREATE host:mathias_flatt SET
+  slug = 'mathias_flatt',
+  name = 'Mathias Flått',
+  avatar = 'https://www.variant.no/_next/image?url=https%3A%2F%2Fvariantno.blob.core.windows.net%2Femployees%2F-6227449b.png&w=640&q=75',
+  externalUrl = '',
+  description = 'Mathias';
+
 
 -- Episode 1 (intro)
 CREATE episode:s1e1 SET
@@ -18,6 +53,10 @@ CREATE episode:s1e1 SET
   mp3 = { url: 'https://media.transistor.fm/554531fd/993d83a1.mp3', length: 40131939, duration: 2506 };
 
 RELATE host:mikael_brevik->hosts->episode:s1e1;
+RELATE host:robin_hovind->hosts->episode:s1e1;
+RELATE host:christian_brevik->hosts->episode:s1e1;
+RELATE host:anders_njos_slinde->hosts->episode:s1e1;
+RELATE host:nikolai_norman_andersen->hosts->episode:s1e1;
 
 -- Episode 2
 
@@ -38,14 +77,11 @@ CREATE episode:s1e2 SET
   episodeUrl = 'https://lesehesten.transistor.fm/episodes/s01e02-the-little-schemer',
   mp3 = { url: 'https://media.transistor.fm/51edc1b4/88892846.mp3', length: 65574357, duration: 4095 };
 
-CREATE book:little_schemer SET
-  slug = 'little_schemer',
-  title = 'The Little Schemer',
-  coverUrl = 'https://mit-press-us.imgix.net/covers/9780262560993.jpg?auto=format&w=298&dpr=2&q=20',
-  description = 'The notion that "thinking about computing is one of the most exciting things the human mind can do" sets both *The Little Schemer *(formerly known as *The Little LISPer*) and its new companion volume, *The Seasoned Schemer*, apart from other books on LISP. The authors\' enthusiasm for their subject is compelling as they present abstract concepts in a humorous and easy-to-grasp fashion. Together, these books will open new doors of thought to anyone who wants to find out what computing is really about. *The Little Schemer* introduces computing as an extension of arithmetic and algebra; things that everyone studies in grade school and high school. It introduces programs as recursive functions and briefly discusses the limits of what computers can do. The authors use the programming language Scheme, and interesting foods to illustrate these abstract ideas. *The Seasoned Schemer* informs the reader about additional dimensions of computing: functions as values, change of state, and exceptional cases. *The Little LISPer* has been a popular introduction to LISP for many years. It had appeared in French and Japanese. *The Little Schemer* and *The Seasoned Schemer* are worthy successors and will prove equally popular as textbooks for Scheme courses as well as companion texts for any complete introductory course in Computer Science.',
-  buyLink = 'https://mitpress.mit.edu/9780262560993/the-little-schemer/';
-
 RELATE host:mikael_brevik->hosts->episode:s1e2;
+RELATE host:mathias_flatt->hosts->episode:s1e2;
+RELATE host:christian_brevik->hosts->episode:s1e2;
+RELATE host:anders_njos_slinde->hosts->episode:s1e2;
+RELATE host:nikolai_norman_andersen->hosts->episode:s1e2;
 
 RELATE host:mikael_brevik->expects->book:little_schemer CONTENT {
   likeIt: true,
@@ -83,6 +119,10 @@ CREATE episode:s1e3 SET
 UPDATE book:thinking_forth SET episode = episode:s1e3;
 
 RELATE host:mikael_brevik->hosts->episode:s1e3;
+RELATE host:christian_brevik->hosts->episode:s1e3;
+RELATE host:anders_njos_slinde->hosts->episode:s1e3;
+RELATE host:nikolai_norman_andersen->hosts->episode:s1e3;
+
 
 RELATE host:mikael_brevik->expects->book:thinking_forth CONTENT {
   likeIt: true,
@@ -119,6 +159,9 @@ CREATE episode:s1e4 SET
 UPDATE book:domain_modeling SET episode = episode:s1e4;
 
 RELATE host:mikael_brevik->hosts->episode:s1e4;
+RELATE host:christian_brevik->hosts->episode:s1e4;
+RELATE host:anders_njos_slinde->hosts->episode:s1e4;
+RELATE host:nikolai_norman_andersen->hosts->episode:s1e4;
 
 RELATE host:mikael_brevik->expects->book:domain_modeling CONTENT {
   likeIt: true,
@@ -135,6 +178,29 @@ RELATE host:mikael_brevik->rates->book:domain_modeling CONTENT {
 };
 
 
+-- Books
+
+CREATE book:fundamentals_software_architecture SET
+  slug = 'fundamentals_software_architecture',
+  title = 'Fundamentals of Software Architecture',
+  coverUrl = 'https://s2.adlibris.com/images/49859168/fundamentals-of-software-architecture.jpg',
+  description = 'Salary surveys worldwide regularly place software architect in the top 10 best jobs, yet no real guide exists to help developers become architects. Until now. This book provides the first comprehensive overview of software architecture’s many aspects. Aspiring and existing architects alike will examine architectural characteristics, architectural patterns, component determination, diagramming and presenting architecture, evolutionary architecture, and many other topics.\n\nMark Richards and Neal Ford — hands-on practitioners who have taught software architecture classes professionally for years — focus on architecture principles that apply across all technology stacks. You’ll explore software architecture in a modern light, taking into account all the innovations of the past decade.',
+  buyLink = 'https://www.adlibris.com/no/bok/fundamentals-of-software-architecture-9781492043454';
+
+CREATE book:devops_handbook SET
+  slug = 'devops_handbook',
+  title = 'The DevOps Handbook',
+  coverUrl = 'https://s1.adlibris.com/images/59955951/the-devops-handbook.jpg',
+  description = 'Over the last five years, The DevOps Handbook has been the definitive guide for taking the successes laid out in the bestselling The Phoenix Project and applying them in any organization. Now, with this fully updated and expanded edition, it’s time to take DevOps out of the IT department and apply it across the full business.\n\nTechnology is now at the core of every company, no matter the business model or product. The theories and practices laid out in The DevOps Handbook are tools to be used by anyone from across the organization to create joy and succeed in the marketplace.',
+  buyLink = 'https://www.adlibris.com/no/bok/the-devops-handbook-9781950508402';
+
+CREATE book:flow_architectures SET
+  slug = 'flow_architectures',
+  title = 'Flow Architectures',
+  coverUrl = 'https://s1.adlibris.com/images/57629521/flow-architectures.jpg',
+  description = 'Software development today is embracing events and streaming data, which optimizes not only how technology interacts but also how businesses integrate with one another to meet customer needs. This phenomenon, called flow, consists of patterns and standards that determine which activity and related data is communicated between parties over the internet. This book explores critical implications of that evolution: What happens when events and data streams help you discover new activity sources to enhance existing businesses or drive new markets? What technologies and architectural patterns can position your company for opportunities enabled by flow? James Urquhart, global field CTO at VMware, guides enterprise architects, software developers, and product managers through the process. Learn the benefits of flow dynamics when businesses, governments, and other institutions integrate via events and data streams Understand the value chain for flow integration through Wardley mapping visualization and promise theory modeling Walk through basic concepts behind today's event-driven systems marketplace Learn how today's integration patterns will influence the real-time events flow in the future Explore why companies should architect and build software today to take advantage of flow in coming years',
+  buyLink = 'https://www.adlibris.com/no/bok/flow-architectures-9781492075899';
+
 
 -- Season 1
 
@@ -142,3 +208,10 @@ CREATE season:s1 SET
   slug = 's1',
   season: 1
   episodes: [episode:s1e1, episode:s1e2, episode:s1e3, episode:s1e4];
+
+RELATE book:little_schemer->included_in->season:s1;
+RELATE book:thinking_forth->included_in->season:s1;
+RELATE book:domain_modeling->included_in->season:s1;
+RELATE book:fundamentals_software_architecture->included_in->season:s1;
+RELATE book:devops_handbook->included_in->season:s1;
+RELATE book:flow_architectures->included_in->season:s1;
