@@ -46,8 +46,8 @@ CREATE episode:s1e1 SET
   slug = 's1e1',
   episode = 1,
   season = season:s1,
-  title = 'Intro'
-  publicationDate = "2022-02-10",
+  title = 'Intro',
+  publicationDate = '2022-02-10',
   description = 'Premiere på sesong, podcast og konsept! Et utvalg kolleger i Variant møtes utover året for å snakke om bøker i et utvalgt pensum for hver sesong. I S01 dekker vi: The Little Schemer, Thinking Forth, Domain Modelling Made Functional, Fundamentals of Software Architecture, The DevOps Handbook og Flow Architectures. Vi har også noen substituttbøker: The Pragmatic Programmer, Effective TypeScript og JavaScript for Impatiant Programmers. Bli med og bli en lesehest du også!',
   episodeUrl = 'https://share.transistor.fm/s/554531fd',
   mp3 = { url: 'https://media.transistor.fm/554531fd/993d83a1.mp3', length: 40131939, duration: 2506 };
@@ -72,7 +72,7 @@ CREATE episode:s1e2 SET
   episode = 2,
   season = season:s1,
   book = book:little_schemer,
-  publicationDate = "2022-05-08",
+  publicationDate = '2022-05-08',
   description = 'Episode to av Lesehesten - utvikling! Et utvalg kolleger i Variant møtes utover året for å snakke om bøker i et utvalgt pensum for hver sesong. I denne episoden diskuterer vi boken The Little Schemer, som på kreativt vis skal lære deg rekursjon ved hjelp av programmeringsspråket Scheme. Allerede i denne episodem merker vi at alle blir klokere med forskjellig perspektiv, og lærer mer av en livlig diskusjon, når vi alle har lest samme bok. Bli med og bli en lesehest du også!',
   episodeUrl = 'https://lesehesten.transistor.fm/episodes/s01e02-the-little-schemer',
   mp3 = { url: 'https://media.transistor.fm/51edc1b4/88892846.mp3', length: 65574357, duration: 4095 };
@@ -92,7 +92,7 @@ RELATE host:mikael_brevik->expects->book:little_schemer CONTENT {
 RELATE host:mikael_brevik->rates->book:little_schemer CONTENT {
   rating: 5,
   recommends: true,
-  unsecure: false,
+  unsure: false,
   completed: true,
   quote: 'Utrolig fascinerende og treffende pedagogikk for meg!',
 };
@@ -111,7 +111,7 @@ CREATE episode:s1e3 SET
   episode = 3,
   season = season:s1,
   book = book:thinking_forth,
-  publicationDate = "2022-08-03",
+  publicationDate = '2022-08-03',
   description = 'Episode tre av Lesehesten - utvikling! Et utvalg kolleger i Variant møtes utover året for å snakke om bøker i et utvalgt pensum for hver sesong. I denne episoden diskuterer vi boken Thinking Forth, som har mye god filosofi og praktisk kunnskap i seg, med programmeringsspråket Forth som bakteppe. Bli med og bli en lesehest du også!',
   episodeUrl = 'https://share.transistor.fm/s/4114e225',
   mp3 = { url: 'https://media.transistor.fm/4114e225/0f1c3580.mp3', length: 50583953, duration: 3158 };
@@ -133,7 +133,7 @@ RELATE host:mikael_brevik->expects->book:thinking_forth CONTENT {
 RELATE host:mikael_brevik->rates->book:thinking_forth CONTENT {
   rating: 5,
   recommends: true,
-  unsecure: false,
+  unsure: false,
   completed: false,
   quote: 'Utrolig fascinerende og treffende pedagogikk for meg!',
 };
@@ -151,7 +151,7 @@ CREATE episode:s1e4 SET
   episode = 4,
   season = season:s1,
   book = book:domain_modeling,
-  publicationDate = "2022-12-11",
+  publicationDate = '2022-12-11',
   description = 'Episode fire av Lesehesten - utvikling! Et utvalg kolleger i Variant møtes utover året for å snakke om bøker i et utvalgt pensum for hver sesong. I denne episoden diskuterer vi boken Domain Modeling Made Function, en bok av F#-guruen Scott Wlaschin hvor han prøver å lære deg F# og Domain-Driven Development i en og samme bok. Bli med og bli en lesehest du også!',
   episodeUrl = 'https://share.transistor.fm/s/47174b2c',
   mp3 = { url: 'https://media.transistor.fm/47174b2c/f57a1e40.mp3', length: 59263387, duration: 3702 };
@@ -172,7 +172,7 @@ RELATE host:mikael_brevik->expects->book:domain_modeling CONTENT {
 RELATE host:mikael_brevik->rates->book:domain_modeling CONTENT {
   rating: 4,
   recommends: true,
-  unsecure: false,
+  unsure: false,
   completed: true,
   quote: 'Mye bra tankegods men også for mye grunnleggende funksjonell programmering om du er kjent med konseptene fra før!',
 };
@@ -206,8 +206,8 @@ CREATE book:flow_architectures SET
 
 CREATE season:s1 SET
   slug = 's1',
-  season: 1
-  episodes: [episode:s1e1, episode:s1e2, episode:s1e3, episode:s1e4];
+  season = 1
+  episodes = [episode:s1e1, episode:s1e2, episode:s1e3, episode:s1e4];
 
 RELATE book:little_schemer->included_in->season:s1;
 RELATE book:thinking_forth->included_in->season:s1;
