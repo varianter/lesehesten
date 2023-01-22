@@ -1,4 +1,13 @@
-import Surreal from "surrealdb.js";
+import Surreal, { Result } from "surrealdb.js";
+
+export type Book = {
+  slug: string;
+  title: string;
+  coverUrl: string;
+  description: string;
+  buyLink: string;
+  id: string;
+};
 
 export type Host = {
   slug: string;
@@ -6,12 +15,47 @@ export type Host = {
   avatar: string;
   externalUrl: string;
   description: string;
-  favouriteBook: {
-    coverUrl: string;
-    title: string;
-    description: string;
-    why: string;
-  };
+};
+
+export type Mp3 = {
+  duration: number;
+  length: number;
+  url: string;
+};
+
+export type Episode = {
+  publicationDate: Date;
+  title: string;
+  description: string;
+  episode: number;
+  episodeUrl: string;
+  id: string;
+};
+
+export type Rating = {
+  completed: boolean;
+  episode: Episode;
+  id: string;
+  quote: string;
+  rating: number;
+  recommends: boolean;
+  unsure: boolean;
+};
+
+export type EpisodeWithBook = Episode & {
+  book: Book;
+};
+
+export type HostWithEpisode = Host & {
+  latest_episodes: EpisodeWithBook[];
+};
+export type HostWithExtra = Host & {
+  latest_episodes: EpisodeWithBook[];
+  mean_rating: number;
+  seasons: Season[];
+  num_seasons: number;
+  recommend_percent: number;
+  top_3: Rating[];
 };
 
 export type Opinion = {
@@ -21,32 +65,59 @@ export type Opinion = {
   hostId: string;
 };
 
-export type Book = {
-  coverUrl: string;
-  title: string;
-  description: string;
-  link: string;
-  expectations: [{ hostId: string; expectation: string }];
-  opinions: Opinion[];
+export type Season = {
+  id: number;
+  season: number;
+  slug: number;
 };
 
-export type Season = Book[];
+async function connect() {
+  console.log(`Connecting to ${import.meta.env.DB_URL}`);
+  const db = new Surreal(import.meta.env.DB_URL);
+  await db.signin({
+    user: import.meta.env.DB_USER!,
+    pass: import.meta.env.DB_PASS!,
+  });
+  await db.use("web", "web");
 
-// Connect db
-// Guess it is fine to just have this here as
-// data.ts will be a singleton and this is used
-// only for creating SSG site.
-console.log(`Connecting to ${import.meta.env.DB_URL}`);
-const db = new Surreal(import.meta.env.DB_URL);
-await db.signin({
-  user: import.meta.env.DB_USER!,
-  pass: import.meta.env.DB_PASS!,
-});
-await db.use("web", "web");
-
-export function getHosts() {
-  return db.select<Host>("host");
+  return db;
 }
+
+export async function getHosts() {
+  const client = await connect();
+  return client.select<Host>("host");
+}
+
 export async function getHost(slug: string) {
-  return (await db.select<Host>(`host:${slug}`))[0]; // yes this is dumb, todotodotodo
+  const client = await connect();
+  const data = await client.query<Result<HostWithExtra[]>[]>(
+    `SELECT 
+      *,
+      array::distinct(->hosts->episode.book->included_in->season) as seasons,
+      count(array::distinct(->hosts->episode.book->included_in->season)) as num_seasons,
+      (SELECT * FROM $parent.id->hosts->episode ORDER BY publicationDate DESC FETCH book) as latest_episodes,
+      type::float(math::mean(->rates.rating)) as mean_rating,
+      type::float(count(->rates.recommends)/count(->rates)) as recommend_percent,
+      (SELECT *, out as episode FROM $parent.id->rates ORDER BY rates.rating NUMERIC ASC LIMIT 3 FETCH episode) as top_3
+    FROM type::thing($host, $slug)
+    FETCH seasons
+`,
+    {
+      host: "host",
+      slug,
+    }
+  );
+  return mapResult(fst(data), fst);
+}
+
+const fst = <T>([h]: T[]) => h;
+
+function mapResult<T, U>(data: Result<T>, fn: (a: T) => U): Result<U> {
+  if (data.result) {
+    return {
+      error: undefined,
+      result: fn(data.result),
+    };
+  }
+  return data as Result<U>;
 }

@@ -1,17 +1,38 @@
 ---
-import { getHost, getHosts } from "../../data";
-
-export async function getStaticPaths() {
-  const hosts = await getHosts();
-  return hosts.map((h) => ({ params: { hostId: h.slug } }));
-}
+import { describe } from "node:test";
+import { getHost } from "../../data";
 
 const { hostId } = Astro.params;
 if (!hostId) {
   return Astro.redirect("/host");
 }
 
-const host = await getHost(hostId);
+const data = await getHost(hostId);
+const host = data.result;
+
+if (!host) {
+  return Astro.redirect("/host");
+}
 ---
 
 <h1>{host.name}</h1>
+
+<p>{host.description}</p>
+
+<p>Snitt rating: {host.mean_rating.toFixed(2)}</p>
+<p>Prosent anbefalinger: {Math.round(host.recommend_percent * 100)}%</p>
+<p>Deltatt i sesonger: {host.num_seasons}</p>
+
+<h2>Siste episoder</h2>
+
+{host.latest_episodes.map((ep) => <h3>{ep.title}</h3>)}
+
+<h2>Topp episoder</h2>
+
+{
+  host.top_3.map((ep) => (
+    <h3>
+      {ep.episode.title} ({ep.rating})
+    </h3>
+  ))
+}
