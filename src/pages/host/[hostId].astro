@@ -25,14 +25,24 @@ if (!host) {
 
 <h2>Siste episoder</h2>
 
-{host.latest_episodes.map((ep) => <h3>{ep.title}</h3>)}
+<ul>
+  {
+    host.latest_episodes.map((ep) => (
+      <a href={`/season/${ep.season.season}/episode/${ep.episode}`}>
+        <li>{ep.title}</li>
+      </a>
+    ))
+  }
+</ul>
 
 <h2>Topp episoder</h2>
 
-{
-  host.top_3.map((ep) => (
-    <h3>
-      {ep.episode.title} ({ep.rating})
-    </h3>
-  ))
-}
+<ul>
+  {
+    host.top_3.map((rating) => (
+      <li>
+        {rating.book.title} ({rating.rating})
+      </li>
+    ))
+  }
+</ul>

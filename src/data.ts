@@ -25,16 +25,24 @@ export type Mp3 = {
 
 export type Episode = {
   publicationDate: Date;
+  slug: string;
   title: string;
   description: string;
   episode: number;
   episodeUrl: string;
   id: string;
+  season: Season;
+};
+
+export type Expectation = {
+  likeIt: boolean;
+  readBefore: boolean;
+  expectation: string;
 };
 
 export type Rating = {
   completed: boolean;
-  episode: Episode;
+  book: Book;
   id: string;
   quote: string;
   rating: number;
@@ -44,6 +52,15 @@ export type Rating = {
 
 export type EpisodeWithBook = Episode & {
   book: Book;
+};
+export type EpisodeWithBookAndRatings = EpisodeWithBook & {
+  expectations: Expectation[];
+  hosts: Host[];
+  ratings: { host: Host; rating: Rating }[];
+  mean_rating: number;
+  num_recommend: number;
+  recommend_percent: number;
+  season: Season;
 };
 
 export type HostWithEpisode = Host & {
@@ -71,6 +88,11 @@ export type Season = {
   slug: number;
 };
 
+export type SeasonWithEpisodesAndBooks = Season & {
+  episodes: EpisodeWithBook[];
+  books: Book[];
+};
+
 async function connect() {
   console.log(`Connecting to ${import.meta.env.DB_URL}`);
   const db = new Surreal(import.meta.env.DB_URL);
@@ -79,7 +101,6 @@ async function connect() {
     pass: import.meta.env.DB_PASS!,
   });
   await db.use("web", "web");
-
   return db;
 }
 
@@ -95,10 +116,10 @@ export async function getHost(slug: string) {
       *,
       array::distinct(->hosts->episode.book->included_in->season) as seasons,
       count(array::distinct(->hosts->episode.book->included_in->season)) as num_seasons,
-      (SELECT * FROM $parent.id->hosts->episode ORDER BY publicationDate DESC FETCH book) as latest_episodes,
+      (SELECT * FROM $parent.id->hosts->episode ORDER BY publicationDate DESC FETCH book, season) as latest_episodes,
       type::float(math::mean(->rates.rating)) as mean_rating,
       type::float(count(->rates.recommends)/count(->rates)) as recommend_percent,
-      (SELECT *, out as episode FROM $parent.id->rates ORDER BY rates.rating NUMERIC ASC LIMIT 3 FETCH episode) as top_3
+      (SELECT *, out as book FROM $parent.id->rates ORDER BY rates.rating NUMERIC ASC LIMIT 3 FETCH book) as top_3
     FROM type::thing($host, $slug)
     FETCH seasons
 `,
@@ -107,6 +128,47 @@ export async function getHost(slug: string) {
       slug,
     }
   );
+  return mapResult(fst(data), fst);
+}
+
+export async function getSeason(season: string) {
+  const client = await connect();
+  const data = await client.query<Result<SeasonWithEpisodesAndBooks[]>[]>(
+    `SELECT 
+      *,
+      <-included_in<-book as books
+    FROM season
+    WHERE season = $season
+    FETCH episodes, episodes.book, books`,
+    {
+      season,
+    }
+  );
+  return mapResult(fst(data), fst);
+}
+export async function getEpisode(season: string, episode: string) {
+  const client = await connect();
+
+  const data = await client.query<Result<EpisodeWithBookAndRatings[]>[]>(
+    `
+    SELECT
+      *,
+      book<-rates as ratings,
+      book<-expects as expectations,
+      <-hosts<-host as hosts,
+      count(book<-rates) as num_recommend,
+      type::float(count(book<-rates.recommends)/count(book<-rates)) as recommend_percent,
+      (SELECT { rating: rating, quote: quote, unsure: unsure, completed: completed } as rating, in as host FROM $parent.book<-rates FETCH host) as ratings,
+      type::float(math::mean(book<-rates.rating)) as mean_rating
+    FROM episode
+    WHERE episode = $episode AND season.season = $season
+    FETCH book, ratings, expectations, hosts, season`,
+    {
+      episode,
+      season,
+    }
+  );
+
   return mapResult(fst(data), fst);
 }
 

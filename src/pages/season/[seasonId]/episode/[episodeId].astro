@@ -1,0 +1,42 @@
+---
+import { getEpisode } from "../../../../data";
+
+const { seasonId, episodeId } = Astro.params;
+if (!seasonId) {
+  return Astro.redirect("/");
+}
+
+if (!episodeId) {
+  return Astro.redirect(`/season/${seasonId}`);
+}
+const data = await getEpisode(seasonId, episodeId);
+
+const episode = data.result;
+if (!episode) {
+  return Astro.redirect("/");
+}
+---
+
+<h1>{episode.title} (rating: {episode.mean_rating})</h1>
+
+<h2>Ratings</h2>
+<ul>
+  {
+    episode.ratings.map((hr) => (
+      <li>
+        {hr.host.name} (rating: {hr.rating.rating})
+      </li>
+    ))
+  }
+</ul>
+
+<h2>Hosts</h2>
+<ul>
+  {
+    episode.hosts.map((host) => (
+      <li>
+        <a href={`/host/${host.slug}`}>{host.name}</a>
+      </li>
+    ))
+  }
+</ul>

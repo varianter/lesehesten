@@ -1,0 +1,35 @@
+---
+import { getSeason } from "../../../data";
+
+const { seasonId } = Astro.params;
+if (!seasonId) {
+  return Astro.redirect("/host");
+}
+
+const data = await getSeason(seasonId);
+const season = data.result;
+
+if (!season) {
+  return Astro.redirect("/");
+}
+---
+
+<h1>Sesong {season.season}</h1>
+
+<h2>Episoder</h2>
+<ul>
+  {
+    season.episodes.map((episode) => (
+      <li>
+        <a href={`/season/${season.season}/episode/${episode.episode}`}>
+          {episode.title}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<h2>Bøker</h2>
+<ul>
+  {season.books.map((book) => <li>{book.title}</li>)}
+</ul>
