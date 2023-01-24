@@ -51,7 +51,7 @@ export type Rating = {
 };
 
 export type EpisodeWithBook = Episode & {
-  book: Book;
+  book?: Book;
 };
 export type EpisodeWithBookAndRatings = EpisodeWithBook & {
   expectations: Expectation[];
@@ -153,7 +153,6 @@ export async function getEpisode(season: string, episode: string) {
     `
     SELECT
       *,
-      book<-rates as ratings,
       book<-expects as expectations,
       <-hosts<-host as hosts,
       count(book<-rates) as num_recommend,
