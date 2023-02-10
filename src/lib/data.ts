@@ -1,4 +1,5 @@
-import Surreal, { Result } from "surrealdb.js";
+import type { Result } from "surrealdb.js";
+import db from "./db";
 
 export type Book = {
   slug: string;
@@ -93,25 +94,12 @@ export type SeasonWithEpisodesAndBooks = Season & {
   books: Book[];
 };
 
-async function connect() {
-  console.log(`Connecting to ${import.meta.env.DB_URL}`);
-  const db = new Surreal(import.meta.env.DB_URL);
-  await db.signin({
-    user: import.meta.env.DB_USER!,
-    pass: import.meta.env.DB_PASS!,
-  });
-  await db.use("web", "web");
-  return db;
-}
-
 export async function getHosts() {
-  const client = await connect();
-  return client.select<Host>("host");
+  return db.select<Host>("host");
 }
 
 export async function getHost(slug: string) {
-  const client = await connect();
-  const data = await client.query<Result<HostWithExtra[]>[]>(
+  const data = await db.query<Result<HostWithExtra[]>[]>(
     `SELECT 
       *,
       array::distinct(->hosts->episode.book->included_in->season) as seasons,
@@ -132,8 +120,7 @@ export async function getHost(slug: string) {
 }
 
 export async function getSeason(season: string) {
-  const client = await connect();
-  const data = await client.query<Result<SeasonWithEpisodesAndBooks[]>[]>(
+  const data = await db.query<Result<SeasonWithEpisodesAndBooks[]>[]>(
     `SELECT 
       *,
       <-included_in<-book as books
@@ -147,9 +134,7 @@ export async function getSeason(season: string) {
   return mapResult(fst(data), fst);
 }
 export async function getEpisode(season: string, episode: string) {
-  const client = await connect();
-
-  const data = await client.query<Result<EpisodeWithBookAndRatings[]>[]>(
+  const data = await db.query<Result<EpisodeWithBookAndRatings[]>[]>(
     `
     SELECT
       *,

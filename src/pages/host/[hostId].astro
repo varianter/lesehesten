@@ -1,5 +1,6 @@
 ---
-import { getHost } from "../../data";
+import Layout from "@layouts/Layout.astro";
+import { getHost } from "@lib/data";
 
 const { hostId } = Astro.params;
 if (!hostId) {
@@ -14,34 +15,38 @@ if (!host) {
 }
 ---
 
-<h1>{host.name}</h1>
+<Layout title="Lesehesten">
+  <main>
+    <h1>{host.name}</h1>
 
-<p>{host.description}</p>
+    <p>{host.description}</p>
 
-<p>Snitt rating: {host.mean_rating.toFixed(2)}</p>
-<p>Prosent anbefalinger: {Math.round(host.recommend_percent * 100)}%</p>
-<p>Deltatt i sesonger: {host.num_seasons}</p>
+    <p>Snitt rating: {host.mean_rating.toFixed(2)}</p>
+    <p>Prosent anbefalinger: {Math.round(host.recommend_percent * 100)}%</p>
+    <p>Deltatt i sesonger: {host.num_seasons}</p>
 
-<h2>Siste episoder</h2>
+    <h2>Siste episoder</h2>
 
-<ul>
-  {
-    host.latest_episodes.map((ep) => (
-      <a href={`/season/${ep.season.season}/episode/${ep.episode}`}>
-        <li>{ep.title}</li>
-      </a>
-    ))
-  }
-</ul>
+    <ul>
+      {
+        host.latest_episodes.map((ep) => (
+          <a href={`/season/${ep.season.season}/episode/${ep.episode}`}>
+            <li>{ep.title}</li>
+          </a>
+        ))
+      }
+    </ul>
 
-<h2>Topp episoder</h2>
+    <h2>Topp episoder</h2>
 
-<ul>
-  {
-    host.top_3.map((rating) => (
-      <li>
-        {rating.book.title} ({rating.rating})
-      </li>
-    ))
-  }
-</ul>
+    <ul>
+      {
+        host.top_3.map((rating) => (
+          <li>
+            {rating.book.title} ({rating.rating})
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

@@ -1,5 +1,6 @@
 ---
-import { getSeason } from "../../../data";
+import { getSeason } from "@lib/data";
+import Layout from "@layouts/Layout.astro";
 
 const { seasonId } = Astro.params;
 if (!seasonId) {
@@ -14,22 +15,26 @@ if (!season) {
 }
 ---
 
-<h1>Sesong {season.season}</h1>
+<Layout title="Lesehesten">
+  <main>
+    <h1>Sesong {season.season}</h1>
 
-<h2>Episoder</h2>
-<ul>
-  {
-    season.episodes.map((episode) => (
-      <li>
-        <a href={`/season/${season.season}/episode/${episode.episode}`}>
-          {episode.title}
-        </a>
-      </li>
-    ))
-  }
-</ul>
+    <h2>Episoder</h2>
+    <ul>
+      {
+        season.episodes.map((episode) => (
+          <li>
+            <a href={`/season/${season.season}/episode/${episode.episode}`}>
+              {episode.title}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
 
-<h2>Bøker</h2>
-<ul>
-  {season.books.map((book) => <li>{book.title}</li>)}
-</ul>
+    <h2>Bøker</h2>
+    <ul>
+      {season.books.map((book) => <li>{book.title}</li>)}
+    </ul>
+  </main>
+</Layout>

@@ -1,5 +1,6 @@
 ---
-import { getEpisode } from "../../../../data";
+import Layout from "@layouts/Layout.astro";
+import { getEpisode } from "@lib/data";
 
 const { seasonId, episodeId } = Astro.params;
 if (!seasonId) {
@@ -17,30 +18,34 @@ if (!episode) {
 }
 ---
 
-<h1>{episode.title} (rating: {episode.mean_rating})</h1>
+<Layout title="Lesehesten">
+  <main>
+    <h1>{episode.title} (rating: {episode.mean_rating})</h1>
 
-{
-  episode.book && (
-    <>
-      <h2>Ratings</h2>
-      <ul>
-        {episode.ratings.map((hr) => (
+    {
+      episode.book && (
+        <>
+          <h2>Ratings</h2>
+          <ul>
+            {episode.ratings.map((hr) => (
+              <li>
+                {hr.host.name} (rating: {hr.rating.rating})
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+
+    <h2>Hosts</h2>
+    <ul>
+      {
+        episode.hosts.map((host) => (
           <li>
-            {hr.host.name} (rating: {hr.rating.rating})
+            <a href={`/host/${host.slug}`}>{host.name}</a>
           </li>
-        ))}
-      </ul>
-    </>
-  )
-}
-
-<h2>Hosts</h2>
-<ul>
-  {
-    episode.hosts.map((host) => (
-      <li>
-        <a href={`/host/${host.slug}`}>{host.name}</a>
-      </li>
-    ))
-  }
-</ul>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

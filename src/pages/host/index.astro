@@ -1,17 +1,22 @@
 ---
-import { getHosts } from "../../data";
+import { getHosts } from "@lib/data";
+import Layout from "@layouts/Layout.astro";
 
 const hosts = await getHosts();
 ---
 
-<h1>Hosts</h1>
+<Layout title="Lesehesten">
+  <main>
+    <h1>Hosts</h1>
 
-<ul>
-  {
-    hosts.map((host) => (
-      <h2>
-        <a href={`/host/${host.slug}`}>{host.name}</a>
-      </h2>
-    ))
-  }
-</ul>
+    <ul>
+      {
+        hosts.map((host) => (
+          <h2>
+            <a href={`/host/${host.slug}`}>{host.name}</a>
+          </h2>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>
