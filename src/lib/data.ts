@@ -33,6 +33,7 @@ export type Episode = {
   episodeUrl: string;
   id: string;
   season: Season;
+  mp3: Mp3;
 };
 
 export type Expectation = {

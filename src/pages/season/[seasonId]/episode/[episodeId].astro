@@ -21,6 +21,7 @@ if (!episode) {
 <Layout title="Lesehesten">
   <main>
     <h1>{episode.title} (rating: {episode.mean_rating})</h1>
+    <p>{episode.mp3.url}</p>
 
     {
       episode.book && (
