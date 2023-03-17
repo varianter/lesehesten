@@ -20,12 +20,9 @@ if (!host) {
     <h1>{host.name}</h1>
 
     <p>{host.description}</p>
-
-    <p>Snitt rating: {host.mean_rating.toFixed(2)}</p>
-    <p>Prosent anbefalinger: {Math.round(host.recommend_percent * 100)}%</p>
     <p>Deltatt i sesonger: {host.num_seasons}</p>
 
-    <h2>Siste episoder</h2>
+    <h2>Nyeste episoder</h2>
 
     <ul>
       {
@@ -37,16 +34,25 @@ if (!host) {
       }
     </ul>
 
-    <h2>Topp episoder</h2>
+    {
+      host.num_rates > 0 && (
+        <>
+          <h2>Topp episoder</h2>
 
-    <ul>
-      {
-        host.top_3.map((rating) => (
-          <li>
-            {rating.book.title} ({rating.rating})
-          </li>
-        ))
-      }
-    </ul>
+          <p>Snitt rating: {host.mean_rating.toFixed(2)}</p>
+          <p>
+            Prosent anbefalinger: {Math.round(host.recommend_percent * 100)}%
+          </p>
+
+          <ul>
+            {host.top_3.map((rating) => (
+              <li>
+                {rating.book.title} ({rating.rating})
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
   </main>
 </Layout>

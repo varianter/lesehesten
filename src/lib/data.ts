@@ -72,6 +72,7 @@ export type HostWithExtra = Host & {
   latest_episodes: EpisodeWithBook[];
   mean_rating: number;
   seasons: Season[];
+  num_rates: number;
   num_seasons: number;
   recommend_percent: number;
   top_3: Rating[];
@@ -106,6 +107,7 @@ export async function getHost(slug: string) {
       array::distinct(->hosts->episode.book->included_in->season) as seasons,
       count(array::distinct(->hosts->episode.book->included_in->season)) as num_seasons,
       (SELECT * FROM $parent.id->hosts->episode ORDER BY publicationDate DESC LIMIT 5 FETCH book, season) as latest_episodes,
+      count(->rates) as num_rates,
       type::float(math::mean(->rates.rating)) as mean_rating,
       type::float(count(->rates.recommends)/count(->rates)) as recommend_percent,
       (SELECT *, out as book FROM $parent.id->rates ORDER BY rates.rating NUMERIC ASC LIMIT 3 FETCH book) as top_3
